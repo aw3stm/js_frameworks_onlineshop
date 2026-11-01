@@ -21,3 +21,8 @@ export interface Product {
   tags: string[];
   reviews: Review[];
 }
+
+export interface ApiResponse<T> {
+  data: T;
+  meta: Record<string, unknown>;
+}
