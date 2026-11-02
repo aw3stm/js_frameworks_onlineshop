@@ -21,7 +21,7 @@ export default async function Home() {
             <div key={product.id} className="flex flex-col group">
               <div className="relative w-full aspect-4/5 mb-6 overflow-hidden">
                 {discount > 0 && (
-                  <span className="absolute top-3 left-3 z-10 bg-black text-white text-xs px-2 py-1">
+                  <span className="absolute top-3 left-3 z-10 bg-atelier-black text-white text-xs px-4 py-2">
                     -{discount}%
                   </span>
                 )}

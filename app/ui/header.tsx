@@ -1,17 +1,18 @@
 "use client";
-
+import SearchBar from "./searchbar";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   return (
-    <header className="bg-white relative z-50 px-6 py-4 md:py-6 grid grid-cols-3 items-center max-w-screen-2xl mx-auto border-b border-gray-300/30">
+    <header className="bg-white relative z-50 px-6 py-4 md:py-6 grid grid-cols-3 items-center max-w-screen mx-auto border-b border-gray-300/30">
       <div className="flex justify-start">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="p-2 -ml-2 hover:opacity-70 transition-opacity cursor-pointer"
+          className="p-2 -m-2 hover:opacity-70 transition-opacity cursor-pointer"
           aria-label="Menu"
         >
           <svg
@@ -38,28 +39,51 @@ export default function Header() {
           className="object-contain w-auto h-auto"
         />
       </Link>
+      <div className="flex justify-end items-center gap-4 lg:gap-6 text-sm tracking-wide">
+        <Link
+          href="/"
+          className="hidden md:block hover:text-gray-500 transition-colors"
+        >
+          Products
+        </Link>
+        <Link
+          href="/contact"
+          className="hidden md:block hover:text-gray-500 transition-colors"
+        >
+          Contact
+        </Link>
 
-      <div className="flex justify-end items-center gap-4 lg:gap-8">
-        <nav className="hidden md:flex items-center gap-4 lg:gap-6 text-sm tracking-wide">
-          <Link
-            href="/search"
-            className="hover:text-gray-500 transition-colors"
-          >
-            Search
-          </Link>
-          <Link href="/" className="hover:text-gray-500 transition-colors">
-            All products
-          </Link>
-          <Link
-            href="/contact"
-            className="hover:text-gray-500 transition-colors"
-          >
-            Contact
-          </Link>
-        </nav>
-
-        <Link href="/cart" className="flex items-center gap-2 p-2 -mr-2 group">
+        <button
+          onClick={() => {
+            setIsSearchOpen(!isSearchOpen);
+            setIsOpen(false);
+          }}
+          aria-label="Search"
+          aria-expanded={isSearchOpen}
+          className="relative hover:opacity-70 transition-opacity cursor-pointer after:absolute after:-inset-2"
+        >
           <svg
+            className="block"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+
+        <Link
+          href="/cart"
+          className="relative flex items-center gap-2 group after:absolute after:-inset-2"
+        >
+          <svg
+            className="block"
             width="20"
             height="20"
             viewBox="0 0 24 24"
@@ -73,14 +97,14 @@ export default function Header() {
             <line x1="3" y1="6" x2="21" y2="6"></line>
             <path d="M16 10a4 4 0 0 1-8 0"></path>
           </svg>
-          <span className="bg-(--atelier-black) text-white text-[10px] w-6 h-6 rounded-full flex items-center justify-center transition-transform group-hover:scale-110">
+          <span className="bg-atelier-black text-white text-[10px] w-6 h-6 rounded-full flex items-center justify-center transition-transform group-hover:scale-110">
             0
           </span>
         </Link>
       </div>
 
       {isOpen && (
-        <div className="md:hidden fixed inset-0 bg-(--atelier-beige)/94 z-50 flex flex-col transition-all duration-500 ease-in-out">
+        <div className="md:hidden fixed inset-0 bg-atelier-beige/94 z-50 flex flex-col transition-all duration-500 ease-in-out">
           <div className="px-6 py-6 flex justify-between items-center border-b border-gray-300/30">
             <button
               onClick={() => setIsOpen(false)}
@@ -93,17 +117,10 @@ export default function Header() {
           <nav className="flex flex-col items-center justify-center grow gap-10 text-xl font-light tracking-wide">
             <Link
               onClick={() => setIsOpen(false)}
-              href="/search"
-              className="hover:text-gray-500 transition-colors"
-            >
-              Search
-            </Link>
-            <Link
-              onClick={() => setIsOpen(false)}
               href="/"
               className="hover:text-gray-500 transition-colors"
             >
-              All products
+              Products
             </Link>
             <Link
               onClick={() => setIsOpen(false)}
@@ -120,17 +137,10 @@ export default function Header() {
         <div className="hidden md:flex absolute top-full left-6 w-80 bg-white border border-white shadow-xl p-12 flex-col gap-5 z-50">
           <Link
             onClick={() => setIsOpen(false)}
-            href="/search"
-            className="hover:text-gray-500 transition-colors"
-          >
-            Search
-          </Link>
-          <Link
-            onClick={() => setIsOpen(false)}
             href="/"
             className="hover:text-gray-500 transition-colors"
           >
-            All products
+            Products
           </Link>
           <Link
             onClick={() => setIsOpen(false)}
@@ -149,6 +159,11 @@ export default function Header() {
           >
             About Atelier North
           </Link>
+        </div>
+      )}
+      {isSearchOpen && (
+        <div className="absolute top-full left-6 right-6 md:right-0 md:left-auto md:w-100 bg-white border border-white rounded-b-md shadow-xl p-4 md:p-6 z-50">
+          <SearchBar onNavigate={() => setIsSearchOpen(false)} />
         </div>
       )}
     </header>

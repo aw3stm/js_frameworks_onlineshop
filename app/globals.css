@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
-:root {
-  --text-headings: #1b1c18;
-  --atelier-beige: #e3ded5;
-  --atelier-black: #1a1a1a;
-  --atelier-details: #1b1c18;
+@theme {
+  --color-headings: #1b1c18;
+  --color-atelier-beige: #e3ded5;
+  --color-atelier-black: #1a1a1a;
+  --color-atelier-details: #1b1c18;
 }
