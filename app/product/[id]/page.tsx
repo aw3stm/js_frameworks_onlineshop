@@ -4,6 +4,7 @@ import { Product } from "@/app/types";
 import Price from "@/app/ui/price";
 import { getDiscountPercent } from "@/app/types/discount";
 import Rating from "@/app/ui/rating";
+import AddToCartButton from "@/app/ui/add-to-cart";
 
 export default async function ProductPage({
   params,
@@ -48,12 +49,7 @@ export default async function ProductPage({
 
         <p className="text-sm leading-relaxed">{product.description}</p>
 
-        <button
-          type="button"
-          className="md:self-start bg-atelier-button rounded-sm text-white px-8 py-3 text-sm tracking-[0.2em] uppercase hover:opacity-80 transition-opacity cursor-pointer"
-        >
-          Add to Cart
-        </button>
+        <AddToCartButton product={product} />
 
         {product.tags && product.tags.length > 0 && (
           <ul className="flex flex-wrap gap-2">
