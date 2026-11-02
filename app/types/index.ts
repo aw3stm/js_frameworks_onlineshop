@@ -26,3 +26,11 @@ export interface ApiResponse<T> {
   data: T;
   meta: Record<string, unknown>;
 }
+
+export interface CartItem {
+  id: string;
+  title: string;
+  price: number;
+  image: Product["image"];
+  quantity: number;
+}

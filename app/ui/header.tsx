@@ -3,10 +3,12 @@ import SearchBar from "./searchbar";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { useCart } from "../context/cart-context";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const { itemCount } = useCart();
   return (
     <header className="bg-white relative z-50 px-6 py-4 md:py-6 grid grid-cols-3 items-center max-w-screen mx-auto border-b border-gray-300/30">
       <div className="flex justify-start">
@@ -98,7 +100,7 @@ export default function Header() {
             <path d="M16 10a4 4 0 0 1-8 0"></path>
           </svg>
           <span className="bg-atelier-black text-white text-[10px] w-6 h-6 rounded-full flex items-center justify-center transition-transform group-hover:scale-110">
-            0
+            {itemCount}
           </span>
         </Link>
       </div>
