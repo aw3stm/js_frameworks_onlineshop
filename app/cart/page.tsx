@@ -10,11 +10,11 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <main className="p-8 max-w-screen-2xl mx-auto md:p-16 text-center">
-        <h1 className="text-3xl font-black mb-4">Your cart</h1>
+        <h1 className="text-2xl font-black mb-4">Your cart</h1>
         <p className="text-sm mb-8">Your cart is empty.</p>
         <Link
           href="/"
-          className="inline-block bg-atelier-button text-white px-8 py-3 text-sm tracking-[0.2em] uppercase hover:opacity-80 transition-opacity"
+          className="inline-block rounded-sm bg-atelier-button text-white px-8 py-3 text-sm tracking-[0.2em] uppercase hover:opacity-80 transition-opacity"
         >
           Continue shopping
         </Link>
@@ -26,7 +26,7 @@ export default function CartPage() {
     <main className="p-8 max-w-screen-2xl mx-auto md:p-16">
       <h1 className="text-3xl font-black mb-8">Your cart</h1>
 
-      <ul className="flex flex-col divide-y divide-gray-300/50">
+      <ul className="flex flex-col divide-y divide-gray-400/50">
         {items.map((item) => (
           <li key={item.id} className="flex gap-4 py-6">
             <div className="relative w-24 h-28 shrink-0 overflow-hidden">
@@ -87,14 +87,14 @@ export default function CartPage() {
         ))}
       </ul>
 
-      <div className="mt-8 pt-6 border-t border-gray-300/50 flex flex-col items-end gap-4">
+      <div className="mt-8 pt-6 border-t border-gray-400/50 flex flex-col items-end gap-4">
         <p className="text-lg">
           Total:{" "}
           <span className="font-medium">{totalPrice.toFixed(2)} SEK</span>
         </p>
         <Link
           href="/checkout/success"
-          className="bg-atelier-button text-white px-8 py-3 text-sm tracking-[0.2em] uppercase hover:opacity-80 transition-opacity"
+          className="bg-atelier-button rounded-sm text-white px-8 py-3 text-sm tracking-[0.2em] uppercase hover:opacity-80 transition-opacity"
         >
           Checkout
         </Link>
