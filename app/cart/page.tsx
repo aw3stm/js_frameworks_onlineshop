@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "../context/cart-context";
+import Price from "../ui/price";
 
 export default function CartPage() {
   const { items, totalPrice, quantityUpdate, removeFromCart } = useCart();
@@ -23,7 +24,7 @@ export default function CartPage() {
   }
 
   return (
-    <main className="p-8 max-w-screen-2xl mx-auto md:p-16">
+    <main className="p-8 max-w-4xl mx-auto md:p-16">
       <h1 className="text-3xl font-black mb-8">Your cart</h1>
 
       <ul className="flex flex-col divide-y divide-gray-400/50">
@@ -47,9 +48,13 @@ export default function CartPage() {
                 </p>
               </div>
 
-              <p className="text-sm text-gray-500">
-                {item.price.toFixed(2)} SEK each
-              </p>
+              <div className="flex items-center gap-2 text-sm">
+                <Price
+                  price={item.originalPrice}
+                  discountedPrice={item.price}
+                />
+                <span className="text-gray-500">each</span>
+              </div>
 
               <div className="flex items-center justify-between mt-auto">
                 <div className="flex items-center border border-atelier-details/40">

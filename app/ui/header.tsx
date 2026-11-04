@@ -2,17 +2,63 @@
 import SearchBar from "./searchbar";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useCart } from "../context/cart-context";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { itemCount } = useCart();
+
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const searchRef = useRef<HTMLDivElement>(null);
+  const searchButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!isOpen && !isSearchOpen) return;
+
+    function handleClick(e: MouseEvent) {
+      const target = e.target as Node;
+
+      if (
+        isOpen &&
+        !menuRef.current?.contains(target) &&
+        !menuButtonRef.current?.contains(target)
+      ) {
+        setIsOpen(false);
+      }
+
+      if (
+        isSearchOpen &&
+        !searchRef.current?.contains(target) &&
+        !searchButtonRef.current?.contains(target)
+      ) {
+        setIsSearchOpen(false);
+      }
+    }
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        setIsOpen(false);
+        setIsSearchOpen(false);
+      }
+    }
+
+    document.addEventListener("click", handleClick);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("click", handleClick);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, isSearchOpen]);
+
   return (
     <header className="bg-white relative z-50 px-6 py-4 md:py-6 grid grid-cols-3 items-center max-w-screen mx-auto border-b border-gray-300/30">
       <div className="flex justify-start">
         <button
+          ref={menuButtonRef}
           onClick={() => setIsOpen(!isOpen)}
           className="p-2 -m-2 hover:opacity-70 transition-opacity cursor-pointer"
           aria-label="Menu"
@@ -56,6 +102,7 @@ export default function Header() {
         </Link>
 
         <button
+          ref={searchButtonRef}
           onClick={() => {
             setIsSearchOpen(!isSearchOpen);
             setIsOpen(false);
@@ -106,7 +153,10 @@ export default function Header() {
       </div>
 
       {isOpen && (
-        <div className="md:hidden fixed inset-0 bg-atelier-beige/94 z-50 flex flex-col transition-all duration-500 ease-in-out">
+        <div
+          ref={menuRef}
+          className="md:hidden fixed inset-0 bg-atelier-beige/94 z-50 flex flex-col transition-all duration-500 ease-in-out"
+        >
           <div className="px-6 py-6 flex justify-between items-center border-b border-gray-300/30">
             <button
               onClick={() => setIsOpen(false)}
@@ -136,7 +186,10 @@ export default function Header() {
       )}
 
       {isOpen && (
-        <div className="hidden md:flex absolute top-full left-6 w-80 bg-white border border-white shadow-xl p-12 flex-col gap-5 z-50">
+        <div
+          ref={menuRef}
+          className="hidden md:flex absolute top-full left-6 w-80 bg-white border border-white shadow-xl p-12 flex-col gap-5 z-50"
+        >
           <Link
             onClick={() => setIsOpen(false)}
             href="/"
@@ -164,7 +217,10 @@ export default function Header() {
         </div>
       )}
       {isSearchOpen && (
-        <div className="absolute top-full left-6 right-6 md:right-0 md:left-auto md:w-100 bg-white border border-white rounded-b-md shadow-xl p-4 md:p-6 z-50">
+        <div
+          ref={searchRef}
+          className="absolute top-full left-6 right-6 md:right-0 md:left-auto md:w-100 bg-white border border-white rounded-b-md shadow-xl p-4 md:p-6 z-50"
+        >
           <SearchBar onNavigate={() => setIsSearchOpen(false)} />
         </div>
       )}
