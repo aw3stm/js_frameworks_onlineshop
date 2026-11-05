@@ -89,7 +89,7 @@ export default function Header() {
       </Link>
       <div className="flex justify-end items-center gap-4 lg:gap-6 text-sm tracking-wide">
         <Link
-          href="/"
+          href="/products"
           className="hidden md:block hover:text-gray-500 transition-colors"
         >
           Products
@@ -169,7 +169,7 @@ export default function Header() {
           <nav className="flex flex-col items-center justify-center grow gap-10 text-xl font-light tracking-wide">
             <Link
               onClick={() => setIsOpen(false)}
-              href="/"
+              href="/products"
               className="hover:text-gray-500 transition-colors"
             >
               Products
@@ -192,7 +192,7 @@ export default function Header() {
         >
           <Link
             onClick={() => setIsOpen(false)}
-            href="/"
+            href="/products"
             className="hover:text-gray-500 transition-colors"
           >
             Products
@@ -209,7 +209,7 @@ export default function Header() {
 
           <Link
             onClick={() => setIsOpen(false)}
-            href="/contact"
+            href="/"
             className="hover:text-gray-500 transition-colors text-lg font-light tracking-wide"
           >
             About Atelier North
