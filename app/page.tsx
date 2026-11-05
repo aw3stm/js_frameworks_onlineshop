@@ -75,12 +75,12 @@ export default async function Home() {
 
         <div className="my-16 md:my-24">
           <PromoBanner
-            image="/images/serum_4.jpg"
+            image="/images/serum_banner.jpg"
             imageAlt="Serum bottle on red water beads"
             eyebrow="Featured"
-            title="Serum"
-            text="Short text about the serum goes here."
-            href="/products"
+            title="Vitamin C Serum"
+            text="Brighten. Firm. Protect. Experience the power of pure Vitamin C. A lightweight daily serum designed to visibly even skin tone and restore your natural radiance."
+            href="/product/414f5b60-c574-4a2f-a77b-3956b983495b"
             cta="Shop the serum"
           />
         </div>

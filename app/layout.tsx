@@ -2,6 +2,7 @@ import { CartProvider } from "./context/cart-context";
 import "./globals.css";
 import Header from "./ui/header";
 import { manrope } from "@/app/ui/fonts";
+import Footer from "./ui/footer";
 
 export default function RootLayout({
   children,
@@ -18,7 +19,8 @@ export default function RootLayout({
             Free delivery on orders over 500 SEK
           </div>
           <Header />
-          {children}
+          <div className="flex-1">{children}</div>
+          <Footer />
         </CartProvider>
       </body>
     </html>

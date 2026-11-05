@@ -80,7 +80,7 @@ export default function ContactForm() {
       className="flex flex-col gap-6 max-w-xl mx-auto"
     >
       <div className="flex flex-col gap-2">
-        <label htmlFor="fullName" className="text-sm">
+        <label htmlFor="fullName" className="text-md">
           Full name
         </label>
         <input
@@ -94,14 +94,14 @@ export default function ContactForm() {
           className={`${inputClass} ${borderClass("fullName")}`}
         />
         {errors.fullName && (
-          <p id="fullName-error" role="alert" className="text-xs text-red-700">
+          <p id="fullName-error" role="alert" className="text-sm text-red-700">
             {errors.fullName}
           </p>
         )}
       </div>
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="subject" className="text-sm">
+        <label htmlFor="subject" className="text-md">
           Subject
         </label>
         <input
@@ -115,14 +115,14 @@ export default function ContactForm() {
           className={`${inputClass} ${borderClass("subject")}`}
         />
         {errors.subject && (
-          <p id="subject-error" role="alert" className="text-xs text-red-700">
+          <p id="subject-error" role="alert" className="text-sm text-red-700">
             {errors.subject}
           </p>
         )}
       </div>
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="email" className="text-sm">
+        <label htmlFor="email" className="text-md">
           Email
         </label>
         <input
@@ -136,14 +136,14 @@ export default function ContactForm() {
           className={`${inputClass} ${borderClass("email")}`}
         />
         {errors.email && (
-          <p id="email-error" role="alert" className="text-xs text-red-700">
+          <p id="email-error" role="alert" className="text-sm text-red-700">
             {errors.email}
           </p>
         )}
       </div>
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="message" className="text-sm">
+        <label htmlFor="message" className="text-md">
           Message
         </label>
         <textarea
@@ -157,7 +157,7 @@ export default function ContactForm() {
           className={`${inputClass} ${borderClass("message")}`}
         />
         {errors.message && (
-          <p id="message-error" role="alert" className="text-xs text-red-700">
+          <p id="message-error" role="alert" className="text-sm text-red-700">
             {errors.message}
           </p>
         )}
@@ -171,7 +171,7 @@ export default function ContactForm() {
       </button>
 
       {isSent && (
-        <p role="status" className="text-sm">
+        <p role="status" className="text-md">
           Thank you! Your message has been sent.
         </p>
       )}
