@@ -6,7 +6,9 @@ import { useCart } from "../context/cart-context";
 import Price from "../ui/price";
 
 export default function CartPage() {
-  const { items, totalPrice, quantityUpdate, removeFromCart } = useCart();
+  const { items, totalPrice, quantityUpdate, removeFromCart, isLoaded } =
+    useCart();
+  if (!isLoaded) return null;
 
   if (items.length === 0) {
     return (
@@ -99,6 +101,11 @@ export default function CartPage() {
         </p>
         <Link
           href="/checkout/success"
+          onClick={() => {
+            try {
+              sessionStorage.setItem("atelier-north-checkout", "true");
+            } catch {}
+          }}
           className="bg-atelier-button rounded-sm text-white px-8 py-3 text-sm tracking-[0.2em] uppercase hover:opacity-80 transition-opacity"
         >
           Checkout

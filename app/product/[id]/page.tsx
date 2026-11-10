@@ -1,10 +1,15 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { Product } from "@/app/types";
+import { getProduct, getProducts } from "@/app/lib/products";
 import Price from "@/app/ui/price";
 import { getDiscountPercent } from "@/app/types/discount";
 import Rating from "@/app/ui/rating";
 import AddToCartButton from "@/app/ui/add-to-cart";
+
+export async function generateStaticParams() {
+  const products = await getProducts();
+  return products.map((product) => ({ id: product.id }));
+}
 
 export default async function ProductPage({
   params,
@@ -12,11 +17,9 @@ export default async function ProductPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const response = await fetch(`https://v2.api.noroff.dev/online-shop/${id}`);
-  if (!response.ok) notFound();
+  const product = await getProduct(id);
+  if (!product) notFound();
 
-  const result: { data: Product } = await response.json();
-  const product = result.data;
   const discount = getDiscountPercent(product);
 
   return (

@@ -55,7 +55,7 @@ export default function Header() {
   }, [isOpen, isSearchOpen]);
 
   return (
-    <header className="bg-white relative z-50 px-6 py-4 md:py-6 grid grid-cols-3 items-center max-w-screen mx-auto border-b border-gray-300/30">
+    <header className="bg-white relative z-50 w-full px-6 py-4 md:py-6 grid grid-cols-3 items-center max-w-screen mx-auto border-b border-gray-300/30">
       <div className="flex justify-start">
         <button
           ref={menuButtonRef}

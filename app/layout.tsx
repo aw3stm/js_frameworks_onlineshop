@@ -12,7 +12,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${manrope.className} antialiased bg-atelier-beige text-atelier-black`}
+        className={`${manrope.className} antialiased bg-atelier-beige text-atelier-black min-h-dvh flex flex-col`}
       >
         <CartProvider>
           <div className=" bg-atelier-details text-white text-[10px] sm:text-xs text-center py-2 md:py-3 tracking-[0.2em] uppercase">
