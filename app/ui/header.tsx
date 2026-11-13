@@ -5,12 +5,20 @@ import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import { useCart } from "../context/cart-context";
 
+const mainLinks = [
+  { href: "/products", label: "Products" },
+  { href: "/contact", label: "Contact" },
+];
+const aboutLink = { href: "/about", label: "About Atelier North" };
+const mobileLinks = [...mainLinks, aboutLink];
+
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { itemCount } = useCart();
 
-  const menuRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const desktopMenuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
   const searchButtonRef = useRef<HTMLButtonElement>(null);
@@ -21,11 +29,12 @@ export default function Header() {
     function handleClick(e: MouseEvent) {
       const target = e.target as Node;
 
-      if (
-        isOpen &&
-        !menuRef.current?.contains(target) &&
-        !menuButtonRef.current?.contains(target)
-      ) {
+      const insideMenu =
+        mobileMenuRef.current?.contains(target) ||
+        desktopMenuRef.current?.contains(target) ||
+        menuButtonRef.current?.contains(target);
+
+      if (isOpen && !insideMenu) {
         setIsOpen(false);
       }
 
@@ -54,14 +63,27 @@ export default function Header() {
     };
   }, [isOpen, isSearchOpen]);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    if (!window.matchMedia("(max-width: 767px)").matches) return;
+
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [isOpen]);
+
   return (
-    <header className="bg-white relative z-50 w-full px-6 py-4 md:py-6 grid grid-cols-3 items-center max-w-screen mx-auto border-b border-gray-300/30">
+    <header className="bg-white sticky top-0 z-40 w-full px-6 py-4 md:py-6 grid grid-cols-3 items-center max-w-screen mx-auto border-b border-gray-300/30">
       <div className="flex justify-start">
         <button
           ref={menuButtonRef}
           onClick={() => setIsOpen(!isOpen)}
           className="p-2 -m-2 hover:opacity-70 transition-opacity cursor-pointer"
           aria-label="Menu"
+          aria-expanded={isOpen}
+          aria-controls="mobile-menu"
         >
           <svg
             width="32"
@@ -87,19 +109,17 @@ export default function Header() {
           className="object-contain w-auto h-auto"
         />
       </Link>
+
       <div className="flex justify-end items-center gap-4 lg:gap-6 text-sm tracking-wide">
-        <Link
-          href="/products"
-          className="hidden md:block hover:text-gray-500 transition-colors"
-        >
-          Products
-        </Link>
-        <Link
-          href="/contact"
-          className="hidden md:block hover:text-gray-500 transition-colors"
-        >
-          Contact
-        </Link>
+        {mainLinks.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            className="hidden md:block hover:text-gray-500 transition-colors"
+          >
+            {link.label}
+          </Link>
+        ))}
 
         <button
           ref={searchButtonRef}
@@ -152,70 +172,124 @@ export default function Header() {
         </Link>
       </div>
 
-      {isOpen && (
-        <div
-          ref={menuRef}
-          className="md:hidden fixed inset-0 bg-atelier-beige/94 z-50 flex flex-col transition-all duration-500 ease-in-out"
-        >
-          <div className="px-6 py-6 flex justify-between items-center border-b border-gray-300/30">
+      <div
+        id="mobile-menu"
+        ref={mobileMenuRef}
+        aria-hidden={!isOpen}
+        className={`md:hidden fixed inset-0 z-50 flex flex-col bg-atelier-beige transition-all duration-300 ease-out ${
+          isOpen
+            ? "opacity-100 translate-y-0 visible"
+            : "opacity-0 -translate-y-2 invisible pointer-events-none"
+        }`}
+      >
+        <div className="px-6 py-4 grid grid-cols-3 items-center border-b border-gray-300/30">
+          <div className="flex justify-start">
             <button
               onClick={() => setIsOpen(false)}
-              className="text-sm tracking-[0.2em] uppercase hover:opacity-70 transition-opacity cursor-pointer"
+              className="p-2 -m-2 hover:opacity-70 transition-opacity cursor-pointer"
+              aria-label="Close menu"
             >
-              Close ✕
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              >
+                <line x1="5" y1="5" x2="19" y2="19"></line>
+                <line x1="19" y1="5" x2="5" y2="19"></line>
+              </svg>
             </button>
           </div>
-
-          <nav className="flex flex-col items-center justify-center grow gap-10 text-xl font-light tracking-wide">
-            <Link
-              onClick={() => setIsOpen(false)}
-              href="/products"
-              className="hover:text-gray-500 transition-colors"
-            >
-              Products
-            </Link>
-            <Link
-              onClick={() => setIsOpen(false)}
-              href="/contact"
-              className="hover:text-gray-500 transition-colors"
-            >
-              Contact
-            </Link>
-          </nav>
+          <Link
+            href="/"
+            onClick={() => setIsOpen(false)}
+            className="flex justify-center"
+          >
+            <Image
+              src="/images/Atelier North.svg"
+              alt="Atelier North"
+              width={160}
+              height={40}
+              className="object-contain w-auto h-auto"
+            />
+          </Link>
+          <div />
         </div>
-      )}
+
+        <div className="flex-1 overflow-y-auto px-6 pt-6 pb-8 flex flex-col">
+          <div className="mb-8">
+            {isOpen && <SearchBar onNavigate={() => setIsOpen(false)} />}
+          </div>
+
+          <nav aria-label="Main" className="flex flex-col">
+            {mobileLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setIsOpen(false)}
+                className="group flex items-center justify-between py-5 border-b border-b-atelier-button/30 text-lg font-light tracking-wide"
+              >
+                <span>{link.label}</span>
+                <span
+                  aria-hidden
+                  className="text-lg text-atelier-details transition-transform group-hover:translate-x-1"
+                >
+                  →
+                </span>
+              </Link>
+            ))}
+          </nav>
+
+          <div className="mt-6 flex flex-col">
+            <Link
+              href="/cart"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center justify-between py-4 text-lg tracking-wide"
+            >
+              <span>Cart</span>
+              <span className="bg-atelier-button text-white text-[10px] w-8 h-8 rounded-full flex items-center justify-center">
+                {itemCount}
+              </span>
+            </Link>
+          </div>
+
+          <div className="mt-auto pt-10 flex flex-col gap-2 text-[11px] tracking-[0.2em] uppercase text-atelier-button">
+            <span>Free delivery on orders over 500 SEK</span>
+          </div>
+        </div>
+      </div>
 
       {isOpen && (
         <div
-          ref={menuRef}
+          ref={desktopMenuRef}
           className="hidden md:flex absolute top-full left-6 w-80 bg-white border border-white shadow-xl p-12 flex-col gap-5 z-50"
         >
-          <Link
-            onClick={() => setIsOpen(false)}
-            href="/products"
-            className="hover:text-gray-500 transition-colors"
-          >
-            Products
-          </Link>
-          <Link
-            onClick={() => setIsOpen(false)}
-            href="/contact"
-            className="hover:text-gray-500 transition-colors"
-          >
-            Contact
-          </Link>
+          {mainLinks.map((link) => (
+            <Link
+              key={link.href}
+              onClick={() => setIsOpen(false)}
+              href={link.href}
+              className="hover:text-gray-500 transition-colors"
+            >
+              {link.label}
+            </Link>
+          ))}
 
           <div className="h-px bg-gray-200 w-full my-2"></div>
 
           <Link
             onClick={() => setIsOpen(false)}
-            href="/"
+            href={aboutLink.href}
             className="hover:text-gray-500 transition-colors text-lg font-light tracking-wide"
           >
-            About Atelier North
+            {aboutLink.label}
           </Link>
         </div>
       )}
+
       {isSearchOpen && (
         <div
           ref={searchRef}

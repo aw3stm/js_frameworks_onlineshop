@@ -99,17 +99,27 @@ export default function CartPage() {
           Total:{" "}
           <span className="font-medium">{totalPrice.toFixed(2)} SEK</span>
         </p>
-        <Link
-          href="/checkout/success"
-          onClick={() => {
-            try {
-              sessionStorage.setItem("atelier-north-checkout", "true");
-            } catch {}
-          }}
-          className="bg-atelier-button rounded-sm text-white px-8 py-3 text-sm tracking-[0.2em] uppercase hover:opacity-80 transition-opacity"
-        >
-          Checkout
-        </Link>
+
+        <div className="flex w-full flex-col-reverse gap-3 sm:w-auto sm:flex-row">
+          <Link
+            href="/products"
+            className="rounded-sm border border-atelier-details/40 px-8 py-3 text-center text-sm tracking-[0.2em] uppercase hover:bg-atelier-beige transition-colors"
+          >
+            Continue shopping
+          </Link>
+
+          <Link
+            href="/checkout/success"
+            onClick={() => {
+              try {
+                sessionStorage.setItem("atelier-north-checkout", "true");
+              } catch {}
+            }}
+            className="rounded-sm bg-atelier-button px-8 py-3 text-center text-sm tracking-[0.2em] text-white uppercase hover:opacity-80 transition-opacity"
+          >
+            Checkout
+          </Link>
+        </div>
       </div>
     </main>
   );
