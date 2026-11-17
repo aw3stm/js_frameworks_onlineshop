@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "../context/cart-context";
 import Price from "../ui/price";
+import FlowerLine from "../ui/one-line-flower";
 
 export default function CartPage() {
   const { items, totalPrice, quantityUpdate, removeFromCart, isLoaded } =
@@ -12,15 +13,39 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <main className="p-8 max-w-screen-2xl mx-auto md:p-16 text-center">
-        <h1 className="text-2xl font-black mb-4">Your cart</h1>
-        <p className="text-sm mb-8">Your cart is empty.</p>
-        <Link
-          href="/"
-          className="inline-block rounded-sm bg-atelier-button text-white px-8 py-3 text-sm tracking-[0.2em] uppercase hover:opacity-80 transition-opacity"
-        >
-          Continue shopping
-        </Link>
+      <main className="relative isolate flex min-h-[70vh] items-center justify-center overflow-hidden px-8 py-24">
+        <FlowerLine cy={580} />
+
+        <div className="flex max-w-md flex-col items-center text-center">
+          <div className="mb-8 flex h-20 w-20 items-center justify-center rounded-full border border-atelier-button/50">
+            <svg
+              aria-hidden
+              viewBox="0 0 24 24"
+              className="h-8 w-8"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1}
+            >
+              <path d="M5 8h14l-1.2 11.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8L5 8Z" />
+              <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+            </svg>
+          </div>
+
+          <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-atelier-button/70">
+            Nothing here yet
+          </p>
+          <h1 className="mb-4 text-3xl font-black">Your cart is empty</h1>
+          <p className="mb-10 text-sm leading-relaxed">
+            Discover our collection and find something you love.
+          </p>
+
+          <Link
+            href="/products"
+            className="inline-block rounded-sm bg-atelier-button text-white px-8 py-3 text-sm tracking-[0.2em] uppercase hover:opacity-80 transition-opacity"
+          >
+            Continue shopping
+          </Link>
+        </div>
       </main>
     );
   }
@@ -109,12 +134,7 @@ export default function CartPage() {
           </Link>
 
           <Link
-            href="/checkout/success"
-            onClick={() => {
-              try {
-                sessionStorage.setItem("atelier-north-checkout", "true");
-              } catch {}
-            }}
+            href="/checkout"
             className="rounded-sm bg-atelier-button px-8 py-3 text-center text-sm tracking-[0.2em] text-white uppercase hover:opacity-80 transition-opacity"
           >
             Checkout

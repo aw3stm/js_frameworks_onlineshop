@@ -91,7 +91,6 @@ function FormField({
       <div className="relative">
         {children}
 
-        {/* Underline that draws itself while the field has focus */}
         <span
           aria-hidden="true"
           className={`pointer-events-none absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 transition-transform duration-300 ease-out group-focus-within:scale-x-100 motion-reduce:transition-none ${
@@ -223,7 +222,7 @@ export default function ContactForm() {
 
     setValues((prev) => ({ ...prev, [name]: value }));
 
-    // Once a field has been visited, validate it live as the user types.
+    
     setErrors((prev) => ({
       ...prev,
       [name]: touched[name] ? validateField(name, value) : undefined,

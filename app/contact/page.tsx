@@ -1,4 +1,5 @@
 import ContactForm from "../ui/contact-form";
+import FlowerLine from "../ui/one-line-flower";
 
 const CONTACT_DETAILS = [
   {
@@ -13,13 +14,18 @@ const CONTACT_DETAILS = [
 
 export default function ContactPage() {
   return (
-    <section className="relative overflow-hidden px-6 py-20 lg:py-28">
+    <section className="relative isolate overflow-hidden px-6 py-20 lg:py-28">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <div className="absolute -left-32 -top-32 h-96 w-96 animate-pulse rounded-full bg-atelier-details/20 blur-3xl [animation-duration:8s] motion-reduce:animate-none" />
-        <div className="absolute -bottom-40 -right-24 h-112 w-md animate-pulse rounded-full bg-atelier-details/25 blur-3xl [animation-duration:10s] motion-reduce:animate-none" />
-        <span className="absolute left-1/2 top-4 -translate-x-1/2 select-none whitespace-nowrap text-[22vw] font-light leading-none text-atelier-black/4">
-          Contact
-        </span>
+        <div className="absolute -left-24 -top-32 h-96 w-96 animate-pulse rounded-full bg-atelier-details/12 blur-3xl [animation-duration:8s] motion-reduce:animate-none" />
+        <div className="absolute -bottom-40 -right-20 h-112 w-md animate-pulse rounded-full bg-atelier-details/15 blur-3xl [animation-duration:10s] motion-reduce:animate-none" />
+        <FlowerLine
+          cy={150}
+          cx={1120}
+          size={1}
+          tailIn={false}
+          tailOut={false}
+          className="-scale-x-100"
+        />
       </div>
 
       <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2 lg:gap-20">

@@ -1,6 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
 import Button from "../ui/Button";
+import FlowerLine from "../ui/one-line-flower";
 
 const values = [
   {
@@ -27,14 +27,13 @@ const stats = [
 export default function AboutPage() {
   return (
     <main className="bg-stone-50 text-stone-900">
-      {/* Hero */}
-      <section className="relative h-[60vh] min-h-[420px] w-full overflow-hidden">
+      <section className="relative h-[60vh] min-h-105 w-full overflow-hidden">
         <Image
-          src="https://images.unsplash.com/photo-1440581572325-0bea30075d9d?q=80&w=1674&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
+          src="https://images.unsplash.com/photo-1440581572325-0bea30075d9d"
           alt="Atelier North workspace"
           fill
           priority
-          sizes="100vw"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover"
         />
         <div className="absolute inset-0 bg-black/45" />
@@ -48,26 +47,33 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Our story */}
-      <section className="mx-auto grid max-w-5xl gap-10 px-6 py-20 md:grid-cols-2">
-        <h2 className="text-3xl font-semibold md:text-4xl">Our story</h2>
-        <div className="space-y-5 text-lg leading-relaxed text-stone-700">
-          <p>
-            Atelier North was founded in 2014 in a small studio in Stockholm,
-            Sweden. What started as a shared love for simple, honest design
-            quickly grew into a brand built on one idea: good things should be
-            good for the world, too.
-          </p>
-          <p>
-            Inspired by the Swedish concept of <em>lagom</em> — not too much,
-            not too little — we create products that are thoughtful, useful and
-            made to be kept. We believe the most sustainable product is the one
-            you never need to replace.
-          </p>
+      <section className="relative isolate overflow-hidden">
+        <FlowerLine
+          cy={490}
+          cx={1100}
+          size={1.3}
+          tailIn={false}
+          className="-scale-x-100"
+        />
+        <div className="mx-auto grid max-w-5xl gap-10 px-6 py-20 md:grid-cols-2">
+          <h2 className="text-3xl font-semibold md:text-4xl">Our story</h2>
+          <div className="space-y-5 text-lg leading-relaxed text-stone-700">
+            <p>
+              Atelier North was founded in 2014 in a small studio in Stockholm,
+              Sweden. What started as a shared love for simple, honest design
+              quickly grew into a brand built on one idea: good things should be
+              good for the world, too.
+            </p>
+            <p>
+              Inspired by the Swedish concept of <em>lagom</em> — not too much,
+              not too little — we create products that are thoughtful, useful
+              and made to be kept. We believe the most sustainable product is
+              the one you never need to replace.
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* Values */}
       <section className="bg-white py-20">
         <div className="mx-auto max-w-5xl px-6">
           <h2 className="mb-12 text-3xl font-semibold md:text-4xl">
@@ -87,15 +93,14 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Stats */}
       <section className="mx-auto max-w-5xl px-6 py-20">
-        <dl className="grid grid-cols-2 gap-8 text-center md:grid-cols-4">
+        <dl className="grid grid-cols-2 gap-12 text-center md:grid-cols-4">
           {stats.map((stat) => (
             <div key={stat.label}>
               <dt className="order-2 mt-2 text-sm text-stone-600">
                 {stat.label}
               </dt>
-              <dd className="text-4xl font-semibold text-emerald-800">
+              <dd className="text-4xl font-semibold text-atelier-button">
                 {stat.value}
               </dd>
             </div>
