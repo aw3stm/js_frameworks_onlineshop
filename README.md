@@ -55,7 +55,7 @@ A responsive online store built with **Next.js**, **TypeScript** and **Tailwind 
 ### Installation
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/aw3stm/js_frameworks_onlineshop.git
 cd js_frameworks_onlineshop
 npm install
 ```
@@ -154,4 +154,4 @@ The site is deployed on **Vercel** with the Next.js framework preset. Every push
 
 ## Author
 
-_Your name_: [GitHub](https://github.com/aw3stm)
+Anna Vestman: [GitHub](https://github.com/aw3stm)
