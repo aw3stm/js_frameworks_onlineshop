@@ -1,9 +1,59 @@
 @import "tailwindcss";
 
+@layer base {
+  input:focus,
+  textarea:focus {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
 @theme {
   --color-headings: #1b1c18;
   --color-atelier-beige: #e3ded5;
   --color-atelier-black: #1a1a1a;
   --color-atelier-details: #1b1c18;
   --color-atelier-button: #393a33;
+  --color-atelier-error: #a31c1c;
+  --color-atelier-success: #375334;
+  --animate-bump: bump 0.5s ease-out;
+  --animate-toast-in: toast-in 0.25s ease-out;
+  --animate-slide-in: slide-in 0.5s ease-out;
+}
+
+@keyframes bump {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.5);
+  }
+  60% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -20,7 +20,7 @@ const values = [
 const stats = [
   { value: "2014", label: "Founded in Sweden" },
   { value: "100%", label: "Recycled packaging" },
-  { value: "85%", label: "Renewable energy in our supply chain" },
+  { value: "85%", label: "Renewable energy" },
   { value: "12", label: "Local partner workshops" },
 ];
 
@@ -83,24 +83,24 @@ export default function AboutPage() {
             {values.map((value) => (
               <article
                 key={value.title}
-                className="rounded-2xl border border-stone-200 bg-stone-50 p-8 transition-shadow hover:shadow-md"
+                className="rounded-2xl border border-stone-200 bg-atelier-button/80 p-8 transition-shadow hover:shadow-lg"
               >
-                <h3 className="mb-3 text-xl font-semibold">{value.title}</h3>
-                <p className="leading-relaxed text-stone-600">{value.text}</p>
+                <h3 className="mb-3 text-xl text-white font-bold">{value.title}</h3>
+                <p className="leading-relaxed text-white">{value.text}</p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-6 py-20">
+      <section className="mx-auto max-w-5xl px-8 py-20">
         <dl className="grid grid-cols-2 gap-12 text-center md:grid-cols-4">
           {stats.map((stat) => (
             <div key={stat.label}>
               <dt className="order-2 mt-2 text-sm text-stone-600">
                 {stat.label}
               </dt>
-              <dd className="text-4xl font-semibold text-atelier-button">
+              <dd className="text-4xl mt-2 font-semibold text-atelier-button">
                 {stat.value}
               </dd>
             </div>

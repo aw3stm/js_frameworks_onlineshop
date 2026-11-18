@@ -31,9 +31,6 @@ export default function CartPage() {
             </svg>
           </div>
 
-          <p className="mb-3 text-[11px] uppercase tracking-[0.3em] text-atelier-button/70">
-            Nothing here yet
-          </p>
           <h1 className="mb-4 text-3xl font-black">Your cart is empty</h1>
           <p className="mb-10 text-sm leading-relaxed">
             Discover our collection and find something you love.

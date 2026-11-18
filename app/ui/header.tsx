@@ -2,6 +2,7 @@
 import SearchBar from "./searchbar";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { useCart } from "../context/cart-context";
 
@@ -16,12 +17,40 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { itemCount } = useCart();
+  const pathname = usePathname();
+
+  const isActive = (href: string) =>
+    pathname === href || pathname.startsWith(`${href}/`);
 
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const desktopMenuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
   const searchButtonRef = useRef<HTMLButtonElement>(null);
+
+  const [lastAdded, setLastAdded] = useState<{
+    title: string;
+    id: number;
+  } | null>(null);
+  const [addCount, setAddCount] = useState(0);
+
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+
+    function onAdd(e: Event) {
+      const { title } = (e as CustomEvent<{ title: string }>).detail;
+      setLastAdded({ title, id: Date.now() });
+      setAddCount((c) => c + 1);
+      clearTimeout(timer);
+      timer = setTimeout(() => setLastAdded(null), 3000);
+    }
+
+    window.addEventListener("cart:add", onAdd);
+    return () => {
+      window.removeEventListener("cart:add", onAdd);
+      clearTimeout(timer);
+    };
+  }, []);
 
   useEffect(() => {
     if (!isOpen && !isSearchOpen) return;
@@ -111,15 +140,25 @@ export default function Header() {
       </Link>
 
       <div className="flex justify-end items-center gap-4 lg:gap-6 text-sm tracking-wide">
-        {mainLinks.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className="hidden md:block hover:text-gray-500 transition-colors"
-          >
-            {link.label}
-          </Link>
-        ))}
+        {mainLinks.map((link) => {
+          const active = isActive(link.href);
+          return (
+            <Link
+              key={link.href}
+              href={link.href}
+              aria-current={active ? "page" : undefined}
+              className={`relative hidden md:block transition-colors hover:text-gray-500
+                after:absolute after:left-0 after:-bottom-1 after:h-px after:w-full after:bg-current
+                after:origin-left after:transition-transform after:duration-300 ${
+                  active
+                    ? "after:scale-x-100"
+                    : "after:scale-x-0 hover:after:scale-x-100"
+                }`}
+            >
+              {link.label}
+            </Link>
+          );
+        })}
 
         <button
           ref={searchButtonRef}
@@ -166,7 +205,12 @@ export default function Header() {
             <line x1="3" y1="6" x2="21" y2="6"></line>
             <path d="M16 10a4 4 0 0 1-8 0"></path>
           </svg>
-          <span className="bg-atelier-black text-white text-[10px] w-6 h-6 rounded-full flex items-center justify-center transition-transform group-hover:scale-110">
+          <span
+            key={addCount}
+            className={`bg-atelier-black text-white text-[10px] w-6 h-6 rounded-full flex items-center justify-center transition-transform group-hover:scale-110 ${
+              addCount > 0 ? "motion-safe:animate-bump" : ""
+            }`}
+          >
             {itemCount}
           </span>
         </Link>
@@ -230,7 +274,10 @@ export default function Header() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="group flex items-center justify-between py-5 border-b border-b-atelier-button/30 text-lg font-light tracking-wide"
+                aria-current={isActive(link.href) ? "page" : undefined}
+                className={`group flex items-center justify-between py-5 border-b border-b-atelier-button/30 text-lg tracking-wide ${
+                  isActive(link.href) ? "font-medium" : "font-light"
+                }`}
               >
                 <span>{link.label}</span>
                 <span
@@ -298,6 +345,33 @@ export default function Header() {
           <SearchBar onNavigate={() => setIsSearchOpen(false)} />
         </div>
       )}
+
+      <div
+        role="status"
+        aria-live="polite"
+        className="absolute top-full left-6 right-6 md:left-auto md:w-80 mt-2 z-50 pointer-events-none"
+      >
+        {lastAdded && (
+          <div
+            key={lastAdded.id}
+            className="pointer-events-auto bg-white shadow-xl border border-gray-200 rounded-md p-4 flex items-center justify-between gap-4 motion-safe:animate-toast-in"
+          >
+            <div className="min-w-0">
+              <p className="text-[11px] tracking-[0.2em] uppercase text-gray-500">
+                Added to cart
+              </p>
+              <p className="text-sm truncate">{lastAdded.title}</p>
+            </div>
+            <Link
+              href="/cart"
+              onClick={() => setLastAdded(null)}
+              className="shrink-0 text-xs tracking-widest uppercase border-b border-current hover:text-gray-500 transition-colors"
+            >
+              View cart
+            </Link>
+          </div>
+        )}
+      </div>
     </header>
   );
 }

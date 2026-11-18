@@ -119,7 +119,6 @@ export default function CheckoutForm() {
     setIsProcessing(true);
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    // Först NU får man komma åt success-sidan
     try {
       sessionStorage.setItem(CHECKOUT_FLAG, "true");
     } catch {}
@@ -127,7 +126,6 @@ export default function CheckoutForm() {
     router.push("/checkout/success");
   }
 
-  // Vänta tills kundvagnen är laddad från localStorage
   if (!isLoaded) return null;
 
   if (items.length === 0 && !isProcessing) {
@@ -155,9 +153,8 @@ export default function CheckoutForm() {
   return (
     <div className="grid gap-10 lg:grid-cols-[1fr_380px]">
       <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-10">
-        <p className="rounded-sm border border-atelier-details/40 bg-atelier-beige px-4 py-3 text-sm">
-          This is a demo store, so no real payment is made. Use any test number,
-          e.g. <span className="font-mono">4242 4242 4242 4242</span>.
+        <p className="w-fit max-w-xs rounded-sm border border-atelier-details/40 bg-atelier-beige px-3 py-2 text-sm">
+          This is a demo store, so no real payment is made. Use any test number.
         </p>
 
         <fieldset className="flex flex-col gap-5">
@@ -294,12 +291,12 @@ function Field({ label, name, error, ...inputProps }: FieldProps) {
         aria-invalid={!!error}
         aria-describedby={error ? errorId : undefined}
         className={`rounded-sm border px-4 py-3 outline-none transition-colors focus:border-atelier-button ${
-          error ? "border-red-500" : "border-atelier-details/40"
+          error ? "border-atelier-error" : "border-atelier-details/40"
         }`}
         {...inputProps}
       />
       {error && (
-        <p id={errorId} className="text-xs text-red-600">
+        <p id={errorId} className="text-xs text-atelier-error">
           {error}
         </p>
       )}

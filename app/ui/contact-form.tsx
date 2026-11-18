@@ -94,7 +94,7 @@ function FormField({
         <span
           aria-hidden="true"
           className={`pointer-events-none absolute bottom-0 left-0 h-0.5 w-full origin-left scale-x-0 transition-transform duration-300 ease-out group-focus-within:scale-x-100 motion-reduce:transition-none ${
-            error ? "bg-red-700" : "bg-atelier-black"
+            error ? "bg-atelier-error" : "bg-atelier-black"
           }`}
         />
 
@@ -106,7 +106,7 @@ function FormField({
           strokeWidth={2}
           strokeLinecap="round"
           strokeLinejoin="round"
-          className={`pointer-events-none absolute right-0 top-3.5 h-4 w-4 text-green-700 transition-all duration-300 motion-reduce:transition-none ${
+          className={`pointer-events-none absolute right-0 top-3.5 h-4 w-4 text-atelier-success transition-all duration-300 motion-reduce:transition-none ${
             isValid ? "scale-100 opacity-100" : "scale-50 opacity-0"
           }`}
         >
@@ -117,7 +117,11 @@ function FormField({
       {(error || hint) && (
         <div className="flex items-start justify-between gap-4">
           {error ? (
-            <p id={`${id}-error`} role="alert" className="text-sm text-red-700">
+            <p
+              id={`${id}-error`}
+              role="alert"
+              className="text-sm text-atelier-error"
+            >
               {error}
             </p>
           ) : (
@@ -189,7 +193,7 @@ function SuccessPanel({ onReset }: { onReset: () => void }) {
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="h-16 w-16 text-green-700"
+        className="h-16 w-16 text-atelier-success"
       >
         <circle cx="26" cy="26" r="24" pathLength={1} style={draw(0, 700)} />
         <path d="M15 27l8 8 14-16" pathLength={1} style={draw(500, 450)} />
@@ -222,7 +226,6 @@ export default function ContactForm() {
 
     setValues((prev) => ({ ...prev, [name]: value }));
 
-    
     setErrors((prev) => ({
       ...prev,
       [name]: touched[name] ? validateField(name, value) : undefined,
@@ -269,7 +272,7 @@ export default function ContactForm() {
   }
 
   function borderClass(field: FieldName) {
-    return errors[field] ? "border-red-700" : "border-atelier-details/40";
+    return errors[field] ? "border-atelier-error" : "border-atelier-details/40";
   }
 
   function fieldProps(field: FieldName) {
@@ -346,7 +349,12 @@ export default function ContactForm() {
           </span>
         }
       >
-        <textarea rows={6} maxLength={MESSAGE_MAX} {...fieldProps("message")} />
+        <textarea
+          rows={6}
+          maxLength={MESSAGE_MAX}
+          {...fieldProps("message")}
+          className="h-60 w-full resize-none"
+        />
       </FormField>
 
       <button
