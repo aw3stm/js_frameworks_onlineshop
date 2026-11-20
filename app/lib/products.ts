@@ -1,7 +1,6 @@
 import { cacheLife } from "next/cache";
-import { Product } from "../types";
-
-const API_URL = "https://v2.api.noroff.dev/online-shop";
+import { ApiResponse, Product } from "../types";
+import { API_URL } from "./api";
 
 export async function getProducts(): Promise<Product[]> {
   "use cache";
@@ -13,7 +12,7 @@ export async function getProducts(): Promise<Product[]> {
     throw new Error(`Failed to fetch products (${response.status})`);
   }
 
-  const result = await response.json();
+  const result: ApiResponse<Product[]> = await response.json();
   return result.data;
 }
 
@@ -29,6 +28,6 @@ export async function getProduct(id: string): Promise<Product | null> {
     throw new Error(`Failed to fetch product (${response.status})`);
   }
 
-  const result = await response.json();
+  const result: ApiResponse<Product> = await response.json();
   return result.data;
 }

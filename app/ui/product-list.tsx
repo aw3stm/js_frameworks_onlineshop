@@ -25,52 +25,115 @@ function getFilters(products: Product[]): string[] {
     .map(([tag]) => tag);
 }
 
+type SortOption = "featured" | "price-asc" | "price-desc" | "name-asc";
+
+const SORT_OPTIONS: { value: SortOption; label: string }[] = [
+  { value: "featured", label: "Featured" },
+  { value: "price-asc", label: "Price low to high" },
+  { value: "price-desc", label: "Price high to low" },
+  { value: "name-asc", label: "Name: A-Z" },
+];
+
+function sortProducts(products: Product[], sort: SortOption): Product[] {
+  const sorted = [...products];
+
+  switch (sort) {
+    case "price-asc":
+      return sorted.sort((a, b) => a.discountedPrice - b.discountedPrice);
+    case "price-desc":
+      return sorted.sort((a, b) => b.discountedPrice - a.discountedPrice);
+    case "name-asc":
+      return sorted.sort((a, b) => a.title.localeCompare(b.title));
+    case "featured":
+      return products;
+  }
+}
+
 export default function ProductList({ products }: { products: Product[] }) {
   const [selected, setSelected] = useState<string | null>(null);
+  const [sort, setSort] = useState<SortOption>("featured");
 
   const filters = getFilters(products);
-  const visible = selected
+  const filtered = selected
     ? products.filter((product) => getTags(product).includes(selected))
     : products;
+  const visible = sortProducts(filtered, sort);
 
   const baseButton =
     "rounded-sm border border-atelier-details/40 px-5 py-2 text-xs tracking-[0.2em] uppercase transition-colors cursor-pointer";
 
   return (
     <>
-      <div
-        role="group"
-        aria-label="Filter products by category"
-        className="flex flex-wrap gap-3 mb-6"
-      >
-        <button
-          type="button"
-          onClick={() => setSelected(null)}
-          aria-pressed={selected === null}
-          className={`${baseButton} ${
-            selected === null
-              ? "bg-atelier-button text-white"
-              : "hover:bg-atelier-beige"
-          }`}
+      <div className="flex flex-col gap-4 mb-6 md:flex-row md:items-start md:justify-between">
+        <div
+          role="group"
+          aria-label="Filter products by category"
+          className="flex flex-wrap gap-3"
         >
-          All
-        </button>
-
-        {filters.map((tag) => (
           <button
-            key={tag}
             type="button"
-            onClick={() => setSelected(tag)}
-            aria-pressed={selected === tag}
+            onClick={() => setSelected(null)}
+            aria-pressed={selected === null}
             className={`${baseButton} ${
-              selected === tag
+              selected === null
                 ? "bg-atelier-button text-white"
                 : "hover:bg-atelier-beige"
             }`}
           >
-            {tag}
+            All
           </button>
-        ))}
+
+          {filters.map((tag) => (
+            <button
+              key={tag}
+              type="button"
+              onClick={() => setSelected(tag)}
+              aria-pressed={selected === tag}
+              className={`${baseButton} ${
+                selected === tag
+                  ? "bg-atelier-button text-white"
+                  : "hover:bg-atelier-beige"
+              }`}
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-3 md:shrink-0">
+          <label
+            htmlFor="sort"
+            className="text-xs tracking-[0.2em] uppercase text-black/70"
+          >
+            Sort by
+          </label>
+          <div className="relative">
+            <select
+              id="sort"
+              value={sort}
+              onChange={(e) => setSort(e.target.value as SortOption)}
+              className="appearance-none rounded-sm border border-atelier-details/40 bg-transparent py-2 pl-4 pr-10 text-xs tracking-[0.2em] uppercase cursor-pointer outline-none transition-colors focus-visible:border-atelier-black"
+            >
+              {SORT_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 20 20"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.5}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="pointer-events-none absolute right-4 top-1/2 h-3 w-3 -translate-y-1/2"
+            >
+              <path d="M5 7.5l5 5 5-5" />
+            </svg>
+          </div>
+        </div>
       </div>
 
       <p className="text-sm text-black/70 mb-8" aria-live="polite">

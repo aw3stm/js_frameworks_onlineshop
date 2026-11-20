@@ -3,16 +3,21 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Product } from "../types";
+import { ApiResponse, Product } from "../types";
+import { API_URL } from "../lib/api";
 
 export default function SearchBar({ onNavigate }: { onNavigate?: () => void }) {
   const [products, setProducts] = useState<Product[]>([]);
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    fetch("https://v2.api.noroff.dev/online-shop")
-      .then((res) => res.json())
-      .then((result: { data: Product[] }) => setProducts(result.data))
+    fetch(API_URL)
+      .then((res) => {
+        if (!res.ok)
+          throw new Error(`Failed to fetch products (${res.status})`);
+        return res.json() as Promise<ApiResponse<Product[]>>;
+      })
+      .then((result) => setProducts(result.data))
       .catch(() => setProducts([]));
   }, []);
 
